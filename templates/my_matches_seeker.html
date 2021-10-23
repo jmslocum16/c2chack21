@@ -13,9 +13,9 @@
     {% block content %}{% endblock %}
     <div class="container d-flex flex-column">
     <h1>Your job matches</h1>
-      <b>Matches: </b>
+      <b>Matches: {{matches|length}}</b>
       {% for jobs in matches%}
-        <li>{{match}}</li>
+        <li>{{jobs}}</li>
       {% endfor %}
     
   </body>

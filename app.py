@@ -78,7 +78,7 @@ def find_best_profile(position):
 # Find all matches for a profile. Specifically, for each of the positions the profile voted yes on, check if that position also voted yes on the profile
 def find_profile_matches(profile):
   matches = []
-  for position_name, vote in votes_by_profile[profile.username].items():
+  for position_name, vote in votes_by_profile[profile['username']].items():
     if vote and profile['username'] in votes_by_position[position_name] and votes_by_position[position_name][profile['username']]:
       matches.append(positions[position_name])
   return matches
@@ -94,22 +94,32 @@ def find_position_matches(position):
   return matches
 
 
-@app.route('/seeker_creation_page')
+@app.route('/seeker_creation_page', methods=['GET'])
 def seeker_creation_page():
   return render_template('seeker_creation_page.html')
+
+@app.route('/seeker_creation_page', methods=['POST'])
+def submit_seeker_creation():
+  print(request.form)
+  # FIXME: get everything from the form
+  profile = {}
+  add_profile(profile)
+
+  return redirect(url_for('match_seeker_side'))
 
 #adds app route to employer creation page
 @app.route('/employer_creation_page')
 def employer_creation_page():
   return render_template('employer_creation_page.html')
 
-@app.route('/submit_seeker_creation')
-def submit_seeker_creation():
+@app.route('/employer_creation_page', methods=['POST'])
+def submit_position_creation():
+  print(request.form)
   # FIXME: get everything from the form
-  profile = {}
-  add_profile(profile)
+  position = {}
+  add_profile(position)
 
-  return redirect(url_for('match_seeker_side'))
+  return redirect(url_for('match_position_side'))
 
 
 # matching for seeker
@@ -119,6 +129,7 @@ def match_seeker_side():
   profile_name = 'FrontEndHacker123'
   profile = profiles[profile_name]
   best_match = find_best_position(profile)
+  print(best_match)
   return render_template(
 		'match_seeker_side.html',
     username=profile_name,
@@ -127,18 +138,18 @@ def match_seeker_side():
 
 @app.route('/match_seeker_side', methods=['POST'])
 def record_vote_profile():
-  data = request.json
+
   print('match submitted')
-  print(data)
+  print(request.form['username'])
   # FIXME: pass in from UI
-  profile_name = 'FrontEndHacker123'
+  profile_name = request.form['username']
 
-  company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  company_name = request.form['company_name']
+  job_title = request.form['title']
   position_name = (company_name, job_title)
+  vote = 'match' in request.form
 
-  vote = True
-
+  print(profile_name + ' matched ' + company_name + ':' + job_title + ' with ' + str(vote))
   votes_by_profile[profile_name][position_name] = vote
 
   # re-populate matching page
@@ -149,7 +160,7 @@ def record_vote_profile():
 def match_position_side():
   # FIXME: pass in from UI
   company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  job_title = 'FrontEndDeveloper'
   position_name = (company_name, job_title)
 
   position = positions[position_name]
@@ -163,7 +174,7 @@ def match_position_side():
 def record_vote_position():
   # FIXME: pass in from UI
   company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  job_title = 'FrontEndDeveloper'
   position_name = (company_name, job_title)
 
   profile_name = 'FrontEndHacker123'
@@ -179,7 +190,8 @@ def my_matches_seeker():
   #
   username = 'FrontEndHacker123'
 
-  matches = find_profile_matches(profiles[username])
+  # matches = find_profile_matches(profiles[username])
+  matches = [ positions[('Code2College', 'FrontEndDeveloper')] ]
   return render_template('my_matches_seeker.html', username=username, matches=matches)
 
 
@@ -201,7 +213,7 @@ def init_data():
     'skills': ['javascript', 'bootstrap']
   })
   add_position({
-    'title': 'Front End Developer',
+    'title': 'FrontEndDeveloper',
     'company': 'Code2College',
     'description': 'Code2College is looking for a frontend developer to help build a new website.',
     'skills': ['javascript', 'react']
@@ -213,6 +225,6 @@ if __name__ == '__main__':
   # print(profiles)
 
   # tests
-  #print(find_best_profile(positions[('Code2College', 'Front End Developer')]))
+  #print(find_best_profile(positions[('Code2College', 'FrontEndDeveloper')]))
 
   app.run(host='0.0.0.0', port=8080)
