@@ -118,7 +118,7 @@ def submit_seeker_creation():
   print(profile)
   add_profile(profile)
 
-  return redirect('/match_seeker_side')
+  return redirect('/match_seeker_side/'+username)
 
 #adds app route to employer creation page
 @app.route('/employer_creation_page')
@@ -136,26 +136,25 @@ def submit_position_creation():
 
 
 # matching for seeker
-@app.route('/match_seeker_side', methods=['GET'])
-def match_seeker_side():
+@app.route('/match_seeker_side/<username>', methods=['GET'])
+def match_seeker_side(username):
+  print('match seeker for ' + username)
   # FIXME: pass in from UI
-  profile_name = 'FrontEndHacker123'
-  profile = profiles[profile_name]
+  profile = profiles[username]
   best_match = find_best_position(profile)
   print(best_match)
   return render_template(
 		'match_seeker_side.html',
-    username=profile_name,
+    username=username,
 		position=best_match
 	)
 
-@app.route('/match_seeker_side', methods=['POST'])
-def record_vote_profile():
-
+@app.route('/match_seeker_side/<username>', methods=['POST'])
+def record_vote_profile(username):
   print('match submitted')
-  print(request.form['username'])
+  print(username)
   # FIXME: pass in from UI
-  profile_name = request.form['username']
+  profile_name = username
 
   company_name = request.form['company_name']
   job_title = request.form['title']
@@ -166,7 +165,7 @@ def record_vote_profile():
   votes_by_profile[profile_name][position_name] = vote
 
   # re-populate matching page
-  return redirect(url_for('match_seeker_side'))
+  return redirect('/match_seeker_side/'+profile_name)
 
 #matching for positions
 @app.route('/match_position_side', methods=['GET'])
