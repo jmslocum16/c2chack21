@@ -223,6 +223,7 @@ def my_matches_seeker():
 
   # matches = find_profile_matches(profiles[username])
   matches = [ positions[('Code2College', 'FrontEndDeveloper')] ]
+  title = positions[1]
   return render_template('my_matches_seeker.html', username=username, matches=matches)
 
 @app.route('/my_matches_position')
