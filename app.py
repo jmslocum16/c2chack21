@@ -244,11 +244,12 @@ def my_matches_seeker(username):
 
   return render_template('my_matches_seeker.html', username=username, matches=matches)
 
-@app.route('/my_matches_position/company/title')
+@app.route('/my_matches_position/<company>/<title>')
 def my_matches_position(company, title):
+  position = positions[(company, title)]
   matches = find_position_matches(positions[(company, title)])
   #matches = [ profiles['FrontEndHacker123'] ]
-  return render_template('my_matches_position.html', company=company, title=title, matches=matches)
+  return render_template('my_matches_position.html', position=position, matches=matches)
 
 @app.route('/profile_seeker/<username>')
 def profile_seeker(username):

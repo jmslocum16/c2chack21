@@ -31,32 +31,17 @@
     
     {% block content %}{% endblock %}
     <div class="container d-flex flex-column">
-    <h1>Your job matches</h1>
+    <h1>Your profile matches</h1>
       <b>Matches: {{matches|length}}</b>
-      {% for positions in matches%}
-          <!-- <li>{{jobs}}</li> -->
-          <p><b>Company: {{positions.company}}</b></p>
-          <p>Position: {{positions.title}}</p>
+      {% for profile in matches%}
+          <p><b>Username: {{profile.username}}</b></p>
 
             <div class="row">
               <div class="col">
                 <b>Skills: </b>
-                {% for skill in positions.skills%}
+                {% for skill in profile.skills%}
                   <li>{{skill}}</li>
                 {% endfor %}
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <b>Description:</b>
-                <div class="row">
-                  <div class="col-1">
-                  </div>
-                  <div class="col-11">
-                    {{positions.description}}
-                  </div>
-                </div>
               </div>
             </div>
 
