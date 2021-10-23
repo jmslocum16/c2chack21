@@ -1,5 +1,7 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import Flask, render_template
+app = Flask(__name__,
+	template_folder='templates',  # Name of html file folder
+	static_folder='static')
 
 counter = 0
 
@@ -9,14 +11,10 @@ def hello_world():
 
   counter += 1
   print(counter)
-  return '''
-    
-    <h1>Test</hi>
-    <h1>
-    <b> Counter: 
-    <hr>
-    
-    ''' + str(counter)
+  return render_template(
+		'home.html',
+		counter=counter
+	)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080)
