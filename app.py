@@ -117,6 +117,7 @@ def match_seeker_side():
   best_match = find_best_position(profile)
   return render_template(
 		'match_seeker_side.html',
+    username=profile_name,
 		position=best_match
 	)
 
