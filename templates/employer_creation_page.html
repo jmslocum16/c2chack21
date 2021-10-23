@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+<body>
+{% block content %}
+<p>Employer Profile</p>
+
+<div class="container">
+    <div class="card-header">
+        <p>Make An Profile</p>
+    </div>
+    <form action ="" method ="">
+        <div class ="card-body">
+            <div class="card-username">
+                <input type ="text" class="form-control" id="username" name="username" value= "" placeholder="username/ comapny name">
+            </div>
+            <div class="card-email">
+                <input type ="text" class="form-control" id="email" name="email" value="" placeholder="username@email.com">
+            </div>
+            <div class="add-stuff">
+                <input type ="text" class="form-control" placeholder="Job Field/ Position">
+                <input type ="text" class="form-control" placeholder="Desired Skill 1">
+                <input type ="text" class="form-control" placeholder="Desired Skill 2">
+                <input type ="text" class="form-control" placeholder="Location">
+                <input type ="text" class="form-control" placeholder="Job Description">
+
+            </div>
+            <div class="card-submit">
+
+                <input type="submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+</body>
+</html>
