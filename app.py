@@ -102,10 +102,23 @@ def seeker_creation_page():
 def submit_seeker_creation():
   print(request.form)
   # FIXME: get everything from the form
+  username = request.form['username']
+  email = request.form['email']
+  job_field = request.form['job_field']
+  skill1 = request.form['skill_1']
+  skill2 = request.form['skill_2']
+  location = request.form['prefer_location']
+
   profile = {}
+  profile['username'] = username
+  profile['email'] = email
+  profile['job_field'] = job_field
+  profile['skills'] = [skill for skill in [skill1, skill2] if len(skill) > 0]
+  profile['location'] = location
+  print(profile)
   add_profile(profile)
 
-  return redirect(url_for('match_seeker_side'))
+  return redirect('/match_seeker_side')
 
 #adds app route to employer creation page
 @app.route('/employer_creation_page')
