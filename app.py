@@ -129,7 +129,7 @@ def submit_seeker_creation():
   profile['username'] = username
   profile['email'] = email
   profile['job_field'] = job_field
-  profile['skills'] = [skill for skill in all_skills if len(skill) > 0]
+  profile['skills'] = [skill.lower() for skill in all_skills if len(skill) > 0]
   profile['location'] = location
 
   print(profile)
@@ -165,7 +165,7 @@ def submit_position_creation():
   position['company'] = company
   position['email'] = email
   position['title'] = title
-  position['skills'] = [skill for skill in all_skills if len(skill) > 0]
+  position['skills'] = [skill.lower() for skill in all_skills if len(skill) > 0]
   position['location'] = location
   position['description'] = description
 
@@ -252,11 +252,13 @@ def my_matches_position(company, title):
 
 @app.route('/profile_seeker/<username>')
 def profile_seeker(username):
-  return render_template('profile_seeker.html', username=username)
+  profile = profiles[username]
+  return render_template('profile_seeker.html', profile=profile)
 
 @app.route('/profile_position/<company>/<title>')
 def profile_position(company, title):
-  return render_template('profile_position.html', company=company, title=title)
+  position = positions[(company, title)]
+  return render_template('profile_position.html', position=position)
 
 @app.route('/')
 def home():
