@@ -98,6 +98,10 @@ def find_position_matches(position):
 def seeker_creation_page():
   return render_template('seeker_creation_page.html')
 
+#adds app route to employer creation page
+@app.route('/employer_creation_page')
+def employer_creation_page():
+  return render_template('employer_creation_page.html')
 
 @app.route('/submit_seeker_creation')
 def submit_seeker_creation():
