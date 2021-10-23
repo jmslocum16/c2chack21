@@ -20,8 +20,8 @@
     <div class="fixed-bottom">
       <form class="row">
           <input name="username" value={{profile.username}}>
-          <input name="title" value={{position.company_name}}>
-          <input name="company_name" value={{position.title}}>
+          <input name="company_name" value={{position.company_name}}>
+          <input name="title" value={{position.title}}>
           <div class="col-3">
           </div>
           <div class="col-3">
