@@ -183,20 +183,22 @@ def match_position_side():
     position=position
 	)
 
-@app.route('/record_vote_position')
+@app.route('/match_position_side', methods=['POST'])
 def record_vote_position():
+  print('match submitted')
   # FIXME: pass in from UI
-  company_name = 'Code2College'
-  job_title = 'FrontEndDeveloper'
+  profile_name = request.form['username']
+
+  company_name = request.form['company_name']
+  job_title = request.form['title']
   position_name = (company_name, job_title)
+  vote = 'match' in request.form
 
-  profile_name = 'FrontEndHacker123'
-
-  vote = False
-  
+  print(profile_name + ' matched ' + company_name + ':' + job_title + ' with ' + str(vote))
   votes_by_position[position_name][profile_name] = vote
 
   # re-populate matching page
+  return redirect(url_for('match_position_side'))
 
 @app.route('/my_matches_seeker')
 def my_matches_seeker():
