@@ -136,7 +136,7 @@ def submit_seeker_creation():
 
   add_profile(profile)
 
-  return redirect('/match_seeker_side/'+username)
+  return redirect('/profile_seeker/'+username)
 
 #adds app route to employer creation page
 @app.route('/employer_creation_page')
@@ -174,7 +174,7 @@ def submit_position_creation():
 
   add_position(position)
 
-  return redirect('match_position_side/'+company+'/'+title)
+  return redirect('/profile_position/'+company+'/'+title)
 
 
 # matching for seeker

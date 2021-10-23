@@ -12,22 +12,21 @@
               <a class="nav-link" href="../"> <b>Jobify</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/profile_seeker/{{username}}">profile</a>
+                <a class="nav-link" href="/profile_seeker/{{profile.username}}">profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/match_seeker_side/{{username}}">search</a>
+                <a class="nav-link" href="/match_seeker_side/{{profile.username}}">search</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/my_matches_seeker/{{username}}">my matches</a>
+                <a class="nav-link" href="/my_matches_seeker/{{profile.username}}">my matches</a>
             </li>
         </ul>
     </div>
   </nav>
 
   <div class="container d-flex flex-column">
-  <h1>Company: {{position.company}}</h1>
-  <h3>Position: {{position.title}}</h3>
-  <h4>Location: {{position.location}}</h4>
+  <h1>Username: {{profile.username}}</h1>
+  <h4>Location: {{profile.location}}</h4>
   
   <h5>email: {{profile.email}}</h5>
     <div class="row">
