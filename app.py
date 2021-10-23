@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 app = Flask(__name__,
 	template_folder='templates',  # Name of html file folder
 	static_folder='static')
@@ -94,7 +94,22 @@ def find_position_matches(position):
   return matches
 
 
-@app.route('/match_seeker_side')
+@app.route('/seeker_creation_page')
+def seeker_creation_page():
+  return render_template('seeker_creation_page.html')
+
+
+@app.route('/submit_seeker_creation')
+def submit_seeker_creation():
+  # FIXME: get everything from the form
+  profile = {}
+  add_profile(profile)
+
+  return redirect(url_for('match_seeker_side'))
+
+
+# matching for seeker
+@app.route('/match_seeker_side', methods=['GET'])
 def match_seeker_side():
   # FIXME: pass in from UI
   profile_name = 'FrontEndHacker123'
@@ -105,6 +120,26 @@ def match_seeker_side():
 		position=best_match
 	)
 
+@app.route('/match_seeker_side', methods=['POST'])
+def record_vote_profile():
+  data = request.json
+  print('match submitted')
+  print(data)
+  # FIXME: pass in from UI
+  profile_name = 'FrontEndHacker123'
+
+  company_name = 'Code2College'
+  job_title = 'Front End Developer'
+  position_name = (company_name, job_title)
+
+  vote = True
+
+  votes_by_profile[profile_name][position_name] = vote
+
+  # re-populate matching page
+  return redirect(url_for('match_seeker_side'))
+
+#matching for positions
 @app.route('/match_position_side')
 def match_position_side():
   # FIXME: pass in from UI
@@ -119,20 +154,6 @@ def match_position_side():
 		profile=best_match
 	)
 
-# voting logic
-@app.route('/record_vote_profile')
-def record_vote_profile():
-  # FIXME: pass in from UI
-  profile_name = 'FrontEndHacker123'
-
-  company_name = 'Code2College'
-  job_title = 'Front End Developer'
-  position_name = (company_name, job_title)
-
-  vote = True
-
-  votes_by_profile[profile_name][position_name] = vote
-
 @app.route('/record_vote_position')
 def record_vote_position():
   # FIXME: pass in from UI
@@ -145,6 +166,16 @@ def record_vote_position():
   vote = False
   
   votes_by_position[position_name][profile_name] = vote
+
+  # re-populate matching page
+
+@app.route('/my_matches_seeker')
+def my_matches_seeker():
+  #
+  username = 'FrontEndHacker123'
+
+  matches = find_profile_matches(profiles[username])
+  return render_template('my_matches_seeker.html', username=username, matches=matches)
 
 
 @app.route('/')
@@ -177,6 +208,6 @@ if __name__ == '__main__':
   # print(profiles)
 
   # tests
-  print(find_best_profile(positions[('Code2College', 'Front End Developer')]))
+  #print(find_best_profile(positions[('Code2College', 'Front End Developer')]))
 
   app.run(host='0.0.0.0', port=8080)
