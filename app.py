@@ -115,6 +115,7 @@ def match_seeker_side():
   profile_name = 'FrontEndHacker123'
   profile = profiles[profile_name]
   best_match = find_best_position(profile)
+  print(best_match)
   return render_template(
 		'match_seeker_side.html',
     username=profile_name,
@@ -123,18 +124,18 @@ def match_seeker_side():
 
 @app.route('/match_seeker_side', methods=['POST'])
 def record_vote_profile():
-  data = request.json
+
   print('match submitted')
-  print(data)
+  print(request.form['username'])
   # FIXME: pass in from UI
-  profile_name = 'FrontEndHacker123'
+  profile_name = request.form['username']
 
-  company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  company_name = request.form['company_name']
+  job_title = request.form['title']
   position_name = (company_name, job_title)
+  vote = 'match' in request.form
 
-  vote = True
-
+  print(profile_name + ' matched ' + company_name + ':' + job_title + ' with ' + str(vote))
   votes_by_profile[profile_name][position_name] = vote
 
   # re-populate matching page
@@ -145,7 +146,7 @@ def record_vote_profile():
 def match_position_side():
   # FIXME: pass in from UI
   company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  job_title = 'FrontEndDeveloper'
   position_name = (company_name, job_title)
 
   position = positions[position_name]
@@ -159,7 +160,7 @@ def match_position_side():
 def record_vote_position():
   # FIXME: pass in from UI
   company_name = 'Code2College'
-  job_title = 'Front End Developer'
+  job_title = 'FrontEndDeveloper'
   position_name = (company_name, job_title)
 
   profile_name = 'FrontEndHacker123'
@@ -197,7 +198,7 @@ def init_data():
     'skills': ['javascript', 'bootstrap']
   })
   add_position({
-    'title': 'Front End Developer',
+    'title': 'FrontEndDeveloper',
     'company': 'Code2College',
     'description': 'Code2College is looking for a frontend developer to help build a new website.',
     'skills': ['javascript', 'react']
@@ -209,6 +210,6 @@ if __name__ == '__main__':
   # print(profiles)
 
   # tests
-  #print(find_best_profile(positions[('Code2College', 'Front End Developer')]))
+  #print(find_best_profile(positions[('Code2College', 'FrontEndDeveloper')]))
 
   app.run(host='0.0.0.0', port=8080)
