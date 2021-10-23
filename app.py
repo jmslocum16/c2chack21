@@ -1,4 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
+import random
+
 app = Flask(__name__,
 	template_folder='templates',  # Name of html file folder
 	static_folder='static')
@@ -94,9 +96,18 @@ def find_position_matches(position):
   return matches
 
 
+animal_names = ['Dog', 'Cat', 'Fish', 'Mouse', 'Turtle', ' Pigeon', 'Racoon', 'Walrus', 'Eagle', 'Whale', 'Snake', 'Tiger', 'Mongoose', 'Platypus', 'Penguin']
+def get_random_username():
+  first = random.choice(animal_names)
+  second = random.choice(animal_names)
+  third = random.choice(animal_names)
+  
+  return first + second + third
+
 @app.route('/seeker_creation_page', methods=['GET'])
 def seeker_creation_page():
-  return render_template('seeker_creation_page.html')
+  username = get_random_username()
+  return render_template('seeker_creation_page.html', username=username)
 
 @app.route('/seeker_creation_page', methods=['POST'])
 def submit_seeker_creation():
@@ -107,13 +118,18 @@ def submit_seeker_creation():
   job_field = request.form['job_field']
   skill1 = request.form['skill_1']
   skill2 = request.form['skill_2']
+  skill3 = request.form['skill_3']
+  skill4 = request.form['skill_4']
+  skill5 = request.form['skill_5']
   location = request.form['prefer_location']
+
+  all_skills = [skill1, skill2, skill3, skill4, skill5]
 
   profile = {}
   profile['username'] = username
   profile['email'] = email
   profile['job_field'] = job_field
-  profile['skills'] = [skill for skill in [skill1, skill2] if len(skill) > 0]
+  profile['skills'] = [skill for skill in all_skills if len(skill) > 0]
   profile['location'] = location
 
   print(profile)
@@ -136,15 +152,20 @@ def submit_position_creation():
   title = request.form['position']
   skill1 = request.form['skill_1']
   skill2 = request.form['skill_2']
+  skill3 = request.form['skill_3']
+  skill4 = request.form['skill_4']
+  skill5 = request.form['skill_5']
   location = request.form['location']
   description = request.form['description']
+
+  all_skills = [skill1, skill2, skill3, skill4, skill5]
 
   position = {}
 
   position['company'] = company
   position['email'] = email
   position['title'] = title
-  position['skills'] = [skill for skill in [skill1, skill2] if len(skill) > 0]
+  position['skills'] = [skill for skill in all_skills if len(skill) > 0]
   position['location'] = location
   position['description'] = description
 
