@@ -62,7 +62,7 @@ def find_best_position(profile):
 # Find the highest scoring profile that the position has not already seen
 def find_best_profile(position):
   best = None
-  best_score = -1
+  best_score = 0.0
 
   name = position_name(position)
 
@@ -101,7 +101,7 @@ def seeker_creation_page():
 @app.route('/seeker_creation_page', methods=['POST'])
 def submit_seeker_creation():
   print(request.form)
-  # FIXME: get everything from the form
+
   username = request.form['username']
   email = request.form['email']
   job_field = request.form['job_field']
@@ -115,7 +115,9 @@ def submit_seeker_creation():
   profile['job_field'] = job_field
   profile['skills'] = [skill for skill in [skill1, skill2] if len(skill) > 0]
   profile['location'] = location
+
   print(profile)
+
   add_profile(profile)
 
   return redirect('/match_seeker_side/'+username)
@@ -128,11 +130,30 @@ def employer_creation_page():
 @app.route('/employer_creation_page', methods=['POST'])
 def submit_position_creation():
   print(request.form)
-  # FIXME: get everything from the form
-  position = {}
-  add_profile(position)
+  
+  company = request.form['username']
+  email = request.form['email']
+  title = request.form['position']
+  skill1 = request.form['skill_1']
+  skill2 = request.form['skill_2']
+  location = request.form['location']
+  description = request.form['description']
 
-  return redirect(url_for('match_position_side'))
+  position = {}
+
+  position['company'] = company
+  position['email'] = email
+  position['title'] = title
+  position['skills'] = [skill for skill in [skill1, skill2] if len(skill) > 0]
+  position['location'] = location
+  position['description'] = description
+
+  print('created position')
+  print(position)
+
+  add_position(position)
+
+  return redirect('match_position_side/'+company+'/'+title)
 
 
 # matching for seeker
@@ -168,13 +189,10 @@ def record_vote_profile(username):
   return redirect('/match_seeker_side/'+profile_name)
 
 #matching for positions
-@app.route('/match_position_side', methods=['GET'])
-def match_position_side():
+@app.route('/match_position_side/<company>/<title>', methods=['GET'])
+def match_position_side(company, title):
   # FIXME: pass in from UI
-  company_name = 'Code2College'
-  job_title = 'FrontEndDeveloper'
-  position_name = (company_name, job_title)
-
+  position_name = (company, title)
   position = positions[position_name]
   best_match = find_best_profile(position)
   return render_template(
@@ -183,22 +201,20 @@ def match_position_side():
     position=position
 	)
 
-@app.route('/match_position_side', methods=['POST'])
-def record_vote_position():
+@app.route('/match_position_side/<company>/<title>', methods=['POST'])
+def record_vote_position(company, title):
   print('match submitted')
   # FIXME: pass in from UI
   profile_name = request.form['username']
 
-  company_name = request.form['company_name']
-  job_title = request.form['title']
-  position_name = (company_name, job_title)
+  position_name = (company, title)
   vote = 'match' in request.form
 
-  print(profile_name + ' matched ' + company_name + ':' + job_title + ' with ' + str(vote))
+  print(profile_name + ' matched ' + company + ':' + title + ' with ' + str(vote))
   votes_by_position[position_name][profile_name] = vote
 
   # re-populate matching page
-  return redirect(url_for('match_position_side'))
+  return redirect('/match_position_side/'+company+'/'+title)
 
 @app.route('/my_matches_seeker')
 def my_matches_seeker():
