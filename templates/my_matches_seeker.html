@@ -13,15 +13,15 @@
         <div class="container d-flex flex-column">
     <h1>Your job matches</h1>
       <b>Matches: {{matches|length}}</b>
-      {% for jobs in matches%}
+      {% for candidate in matches%}
           <!-- <li>{{jobs}}</li> -->
-          <p><b>Candidate: {{jobs.username}}</b></p>
-          <p>Position: {{jobs.title}}</p>
+          <p><b>Candidate: {{candidate.username}}</b></p>
+          <p>Position: {{candidate.title}}</p>
 
             <div class="row">
               <div class="col">
                 <b>Skills: </b>
-                {% for skill in jobs.skills%}
+                {% for skill in candidate.skills%}
                   <li>{{skill}}</li>
                 {% endfor %}
               </div>
