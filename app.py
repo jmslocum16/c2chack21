@@ -216,26 +216,26 @@ def record_vote_position(company, title):
   # re-populate matching page
   return redirect('/match_position_side/'+company+'/'+title)
 
-@app.route('/my_matches_seeker')
-def my_matches_seeker():
-  #
-  username = 'FrontEndHacker123'
-  title = 'FrontEndDeveloper'
-  
-  # matches = find_profile_matches(profiles[username])
-  matches = [ positions[('Code2College', 'FrontEndDeveloper')] ]
+@app.route('/my_matches_seeker/<username>')
+def my_matches_seeker(username):
+  matches = find_profile_matches(profiles[username])
+  #matches = [ positions[('Code2College', 'FrontEndDeveloper')] ]
 
   return render_template('my_matches_seeker.html', username=username, matches=matches)
 
-@app.route('/my_matches_position')
-def my_matches_position():
-  #
-  company = 'Code2College'
-  title = 'FrontEndDeveloper'
+@app.route('/my_matches_position/company/title')
+def my_matches_position(company, title):
+  matches = find_position_matches(positions[(company, title)])
+  #matches = [ profiles['FrontEndHacker123'] ]
+  return render_template('my_matches_position.html', company=company, title=title, matches=matches)
 
-  # matches = find_profile_matches(profiles[username])
-  matches = [ profiles['FrontEndHacker123'] ]
-  return render_template('my_matches_seeker.html', company=company, title=title, matches=matches)
+@app.route('/profile_seeker/<username>')
+def profile_seeker(username):
+  return render_template('profile_seeker.html', username=username)
+
+@app.route('/profile_position/<company>/<title>')
+def profile_position(company, title):
+  return render_template('profile_position.html', company=company, title=title)
 
 @app.route('/')
 def home():
