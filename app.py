@@ -112,7 +112,14 @@ def submit_seeker_creation():
 def employer_creation_page():
   return render_template('employer_creation_page.html')
 
+@app.route('/employer_creation_page', methods=['POST'])
+def submit_position_creation():
+  print(request.form)
+  # FIXME: get everything from the form
+  position = {}
+  add_profile(position)
 
+  return redirect(url_for('match_position_side'))
 
 
 # matching for seeker
