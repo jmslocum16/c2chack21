@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{profile.username}}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div class="container d-flex flex-column">
+
+    <div class="row">
+      <div class="col">
+        <b>Skills: </b>
+        {% for skill in profile.skills%}
+          <li>{{skill}}</li>
+        {% endfor %}
+      
+      </div>
+    </div>
+
+    <div class="fixed-bottom">
+      <form class="row">
+          <input name="username" value={{profile.username}}>
+          <input name="title" value={{position.company_name}}>
+          <input name="company_name" value={{position.title}}>
+          <div class="col-3">
+          </div>
+          <div class="col-3">
+              <input type="submit" value="match" name="match" class="btn btn-success">
+          </div>
+          <div class="col-3">
+              <input type="submit" value="next" name="next" class="btn btn-danger">
+          </div>
+          <div class="col-3">
+          </div>
+        </form>
+    </div>
+  </div>
+  
+  
+{% endblock %}
