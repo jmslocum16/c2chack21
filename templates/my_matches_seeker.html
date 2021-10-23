@@ -15,7 +15,33 @@
     <h1>Your job matches</h1>
       <b>Matches: {{matches|length}}</b>
       {% for jobs in matches%}
-        <li>{{jobs}}</li>
+          <!-- <li>{{jobs}}</li> -->
+          <p><b>Company: {{jobs.company}}</b></p>
+          <p>Position: {{jobs.title}}</p>
+
+            <div class="row">
+              <div class="col">
+                <b>Skills: </b>
+                {% for skill in jobs.skills%}
+                  <li>{{skill}}</li>
+                {% endfor %}
+              
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <b>Description:</b>
+                <div class="row">
+                  <div class="col-1">
+                  </div>
+                  <div class="col-11">
+                    {{jobs.description}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
       {% endfor %}
     
   </body>
