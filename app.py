@@ -156,7 +156,7 @@ def record_vote_profile():
   return redirect(url_for('match_seeker_side'))
 
 #matching for positions
-@app.route('/match_position_side')
+@app.route('/match_position_side', methods=['GET'])
 def match_position_side():
   # FIXME: pass in from UI
   company_name = 'Code2College'
@@ -166,8 +166,9 @@ def match_position_side():
   position = positions[position_name]
   best_match = find_best_profile(position)
   return render_template(
-		'match_profile_side.html',
-		profile=best_match
+		'match_position_side.html',
+		profile=best_match,
+    position=position
 	)
 
 @app.route('/record_vote_position')
