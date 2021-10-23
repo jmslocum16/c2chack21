@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="description" content={{description}}>
+    <link rel="shortcut icon" href="/favicon.ico">
+    {% block css %}{% endblock %}
+  </head>
+
+  <body>
+    {% block content %}{% endblock %}
+    <div class="container d-flex flex-column">
+    <h1>Your job matches</h1>
+      <b>Matches: </b>
+      {% for jobs in matches%}
+        <li>{{match}}</li>
+      {% endfor %}
+    
+  </body>
+
+</html>
