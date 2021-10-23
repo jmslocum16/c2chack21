@@ -78,7 +78,7 @@ def find_best_profile(position):
 # Find all matches for a profile. Specifically, for each of the positions the profile voted yes on, check if that position also voted yes on the profile
 def find_profile_matches(profile):
   matches = []
-  for position_name, vote in votes_by_profile[profile.username].items():
+  for position_name, vote in votes_by_profile[profile['username']].items():
     if vote and profile['username'] in votes_by_position[position_name] and votes_by_position[position_name][profile['username']]:
       matches.append(positions[position_name])
   return matches
@@ -94,22 +94,25 @@ def find_position_matches(position):
   return matches
 
 
-@app.route('/seeker_creation_page')
+@app.route('/seeker_creation_page', methods=['GET'])
 def seeker_creation_page():
   return render_template('seeker_creation_page.html')
+
+@app.route('/seeker_creation_page', methods=['POST'])
+def submit_seeker_creation():
+  print(request.form)
+  # FIXME: get everything from the form
+  profile = {}
+  add_profile(profile)
+
+  return redirect(url_for('match_seeker_side'))
 
 #adds app route to employer creation page
 @app.route('/employer_creation_page')
 def employer_creation_page():
   return render_template('employer_creation_page.html')
 
-@app.route('/submit_seeker_creation')
-def submit_seeker_creation():
-  # FIXME: get everything from the form
-  profile = {}
-  add_profile(profile)
 
-  return redirect(url_for('match_seeker_side'))
 
 
 # matching for seeker
@@ -180,7 +183,8 @@ def my_matches_seeker():
   #
   username = 'FrontEndHacker123'
 
-  matches = find_profile_matches(profiles[username])
+  # matches = find_profile_matches(profiles[username])
+  matches = [ positions[('Code2College', 'FrontEndDeveloper')] ]
   return render_template('my_matches_seeker.html', username=username, matches=matches)
 
 
