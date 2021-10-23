@@ -23,11 +23,11 @@ votes_by_position = {}
 
 # logic for dealing with profiles and positions
 def position_name(position):
-  return (position.company, position.title)
+  return (position['company'], position['title'])
 
 def add_profile(profile):
-  profiles[profile.username] = profile
-  votes_by_profile[profile.username] = {}
+  profiles[profile['username']] = profile
+  votes_by_profile[profile['username']] = {}
 
 def add_position(position):
   name = position_name(position)
@@ -35,21 +35,23 @@ def add_position(position):
   votes_by_position[name] = {}
 
 def score_match(profile, position):
-  matches = 0.0
+  matches = 0
   for skill in profile['skills']:
     if skill in position['skills']:
       matches += 1
-
-  return matches / len(position['skills'])
+    
+  score = 100.0 * (matches / len(position['skills']))
+  print(profile['username'] + ' + ' + str(position_name(position)) + ' = ' + str(score))
+  return score
 
 # Find the highest scoring position that the seeker has not already seen
 def find_best_position(profile):
   best = None
   best_score = -1
 
-  for position in positions:
+  for position in positions.values():
     name = position_name(position)
-    if not name in votes_by_profile[profile.username]:
+    if not name in votes_by_profile[profile['username']]:
       score = score_match(profile, position)
       if (score > best_score):
         best = position
@@ -64,14 +66,33 @@ def find_best_profile(position):
 
   name = position_name(position)
 
-  for profile in profiles:
-    if not profile.username in votes_by_position[name]:
+  for profile in profiles.values():
+    if not profile['username'] in votes_by_position[name]:
       score = score_match(profile, position)
       if (score > best_score):
-        best = position
+        best = profile
         best_score = score
   
   return best
+
+# Find all matches for a profile. Specifically, for each of the positions the profile voted yes on, check if that position also voted yes on the profile
+def find_profile_matches(profile):
+  matches = []
+  for position_name, vote in votes_by_profile[profile.username].items():
+    if vote and profile['username'] in votes_by_position[position_name] and votes_by_position[position_name][profile['username']]:
+      matches.append(positions[position_name])
+  return matches
+
+  
+# Find all matches for a position. Specifically, for each of the profiles the position voted yes on, check if that profile also voted yes on the position
+def find_position_matches(position):
+  name = position_name(position)
+  matches = []
+  for username, vote in votes_by_position[name].items():
+    if vote and name in votes_by_profile[username] and votes_by_profile[username][name]:
+      matches.append(profiles[username])
+  return matches
+
 
 @app.route('/match_seeker_side')
 def match_seeker_side():
@@ -146,10 +167,16 @@ def init_data():
   add_position({
     'title': 'Front End Developer',
     'company': 'Code2College',
-    'description': 'Code2College is looking for a frontend developer to help builda new website.',
+    'description': 'Code2College is looking for a frontend developer to help build a new website.',
     'skills': ['javascript', 'react']
   })
 
 if __name__ == '__main__':
   init_data()
+  # print(positions)
+  # print(profiles)
+
+  # tests
+  print(find_best_profile(positions[('Code2College', 'Front End Developer')]))
+
   app.run(host='0.0.0.0', port=8080)
