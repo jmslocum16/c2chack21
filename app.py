@@ -96,7 +96,7 @@ def find_position_matches(position):
   return matches
 
 
-animal_names = ['Dog', 'Cat', 'Fish', 'Mouse', 'Turtle', ' Pigeon', 'Racoon', 'Walrus', 'Eagle', 'Whale', 'Snake', 'Tiger', 'Mongoose', 'Platypus', 'Penguin']
+animal_names = ['Dog', 'Cat', 'Fish', 'Mouse', 'Turtle', 'Pigeon', 'Racoon', 'Walrus', 'Eagle', 'Whale', 'Snake', 'Tiger', 'Mongoose', 'Platypus', 'Penguin', 'Bear']
 def get_random_username():
   first = random.choice(animal_names)
   second = random.choice(animal_names)
@@ -270,12 +270,12 @@ def home():
 def init_data():
   add_profile({
     'email': 'backendhacker@gmail.com',
-    'username': 'Backend_Hacker1',
+    'username': 'SnakeWalrusTurtle',
     'skills': ['python', 'sql']
   })
   add_profile({
     'email': 'frontendhacker@gmail.com',
-    'username': 'FrontEndHacker123',
+    'username': 'PlatypusPigeonCat',
     'skills': ['javascript', 'bootstrap']
   })
   add_position({
