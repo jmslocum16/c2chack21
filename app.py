@@ -282,7 +282,7 @@ def init_data():
     'title': 'FrontEndDeveloper',
     'company': 'Code2College',
     'description': 'Code2College is looking for a frontend developer to help build a new website.',
-    'skills': ['javascript', 'react']
+    'skills': ['javascript', 'react', 'css']
   })
 
 if __name__ == '__main__':
